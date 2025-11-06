@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!-- Actualizamos el formulario de sale.order -->
+        <!-- Inherit and customize the sale order form view to add dynamic domains on partner fields -->
         <record id="custom_sale_order_form_domain" model="ir.ui.view">
-            <field name="name">custom_sale_order_form_domain</field>
+            <field name="name">custom.sale.order.form.domain</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <!-- Dominio para partner_id -->
+                <!-- Add domain to partner_id to restrict to top-level partners (no children) -->
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('parent_id', '=', False)]</attribute>
                 </xpath>
-
-                <!-- Dominio para partner_invoice_id -->
+                <!-- Add domain to partner_invoice_id to allow the selected partner or its children -->
                 <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
                     <attribute name="domain">['|', ('parent_id', '=', partner_id), ('id', '=', partner_id)]</attribute>
                 </xpath>
-
-                <!-- Dominio para partner_shipping_id -->
+                <!-- Add domain to partner_shipping_id to allow the selected partner or its children -->
                 <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
                     <attribute name="domain">['|', ('parent_id', '=', partner_id), ('id', '=', partner_id)]</attribute>
                 </xpath>
